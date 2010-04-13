@@ -3,7 +3,7 @@
   (:export :defun*
 	   :defmacro*
 	   :define-compiler-macro*
-	   :prepare-space))
+	   :create-space))
 
 (defpackage :function-namespace
   (:use :function-namespace.provider)

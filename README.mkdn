@@ -1,0 +1,44 @@
+function-namespace documentation
+================================
+
+function-namespace is a simple library which allows you to create namespaces in which you can evaluate functions.  It supports functions, macros and compiler-macros.
+
+The library is fairly straight-forward and should be stable.
+
+Example usage
+-------------
+
+In order to use a space, you must _first_ create the namespace to work in.  A macro with forementioned name will be created, thus the symbol shouldn't have a function, nor a macro connected to it.
+
+    (create-space value)
+
+Once you've done that, you can define functions and macros in the new namespace like so:
+
+    (defun* (value em) (em)
+      (if (eql em 0)
+          "0"
+          (format nil "~Aem" em)))
+    (defun* (value ex) (ex)
+      (if (eql ex 0)
+          "0"
+          (format nil "~Aex" ex)))
+    (defmacro* (value multi) (&rest args)
+      `(format nil "~{~A~^ ~}" (list ,@(mapcar (lambda (arg) `(value ,@arg)) args))))
+
+The functions and macro which have been defined above can be used like this:
+
+    (value px 0)
+    > "0"
+    (value px 10)
+    > "10px"
+    (value multi (px 1) (em 10) (px 0))
+    > "1px 10em 0"
+    (value multi (px 13) (em 0) (px 0) (em 37))
+    > "13px 0 0 37em"
+
+Besides forementioned functionality, you can use define-compiler-macro* for compiler-macro functions in an analogous way.
+
+
+Future work
+-----------
+ *   function-namespace currently doesn't support the immediate use of apply.  It is fairly simple to support some syntax to allow for this and it will likely happen in the near future.
